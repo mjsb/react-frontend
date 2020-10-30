@@ -31,12 +31,12 @@ function App() {
 		
 	}
 
-	async function handleRemoveRepository(id) {
-		const response = await api.delete('repositories/'+id)
+	async function handleRemoveRepository(id) {	
+		await api.delete(`repositories/${id}`)
 
-		api.get('repositories').then(response => {
-            setRepositories(response.data)
-        })
+		setRepositories(repositories.filter(
+			repository => repository.id != id
+		))
         
 	}
 
@@ -44,12 +44,11 @@ function App() {
 	<div>
 		<ul data-testid="repository-list">
 
-			{repositories.map(
-				repository => 
-							<li key={repository.id}>
-								{repository.title}									
-								<button onClick={() => handleRemoveRepository(repository.id)}>Remover</button>
-							</li>
+			{repositories.map(repository => (
+				<li key={repository.id}>
+					{repository.title}
+					<button onClick={() => handleRemoveRepository(repository.id)}>Remover</button>
+				</li>)
 			)}
 
 		</ul>
